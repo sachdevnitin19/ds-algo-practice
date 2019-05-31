@@ -65,38 +65,27 @@ class STPAR {
 
             String temp[] = br.readLine().split(" ");
             int initialPar[] = new int[parLength];
-            int finalPar[] = new int[parLength];
+            int need = 1;
+            boolean state = true;
 
             for (int i = 0; i < parLength; i++)
                 initialPar[i] = Integer.parseInt(temp[i]);
             int j = 0;
             for (int i = 0; i < parLength; i++) {
-                if (i == parLength - 1) {
-                    while (lane.peek() != -1 && lane.peek() < initialPar[i]) {
-                        finalPar[j++] = lane.pop();
-                    }
-                    finalPar[j++] = initialPar[i];
+                while (!lane.isStackEmpty() && lane.peek() == need) {
+                    need++;
+                }
+                if (initialPar[i] == need) {
+                    need++;
+                } else if (!lane.isStackEmpty() && lane.peek() < initialPar[i]) {
+                    state = false;
                     break;
-                }
-                if (initialPar[i] > initialPar[i + 1]) {
-                    lane.push(initialPar[i]);
-                } else if (initialPar[i] < initialPar[i + 1] && (!lane.isStackEmpty() && lane.peek() < initialPar[i])) {
-                    while (lane.peek() != -1 && lane.peek() < initialPar[i]) {
-                        finalPar[j++] = lane.pop();
-                    }
-                    finalPar[j++] = initialPar[i];
                 } else {
-                    finalPar[j++] = initialPar[i];
+                    lane.push(initialPar[i]);
                 }
             }
-            lane.printStack();
-            if (!lane.isStackEmpty()) {
-                while (!lane.isStackEmpty()) {
-                    finalPar[j++] = lane.pop();
-                }
-            }
-            for (int i = 0; i < parLength; i++)
-                System.out.print(finalPar[i] + " ");
+            
+            System.out.println(state ? "yes" : "no");
             parLength = Integer.parseInt(br.readLine());
         }
     }
