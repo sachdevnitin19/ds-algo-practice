@@ -1,35 +1,37 @@
 import java.io.*;
 
 class Rotate {
+    static void reverseArr(int[] arr, int start, int end) {
+        while (start < end) {
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
     public static void main(String args[]) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int f = Integer.parseInt(br.readLine());
-        int n = Integer.parseInt(br.readLine());
-        int arr[] = new int[n];
-        String token[] = br.readLine().split(" ");
-        for (int i = 0; i < n; i++)
-            arr[i] = Integer.parseInt(token[i]);
+        int t = Integer.parseInt(br.readLine());
+        while (t-- > 0) {
+            String token[] = br.readLine().split(" ");
+            int n = Integer.parseInt(token[0]);
+            int f = Integer.parseInt(token[1]);
+            int arr[] = new int[n];
+            token = br.readLine().split(" ");
+            for (int i = 0; i < n; i++)
+                arr[i] = Integer.parseInt(token[i]);
 
-        for (int i = 0; i < f / 2; i++) {
-            int temp = arr[f - i - 1];
-            arr[f - i - 1] = arr[i];
-            arr[i] = temp;
-        }
-        for (int i = f, j=0; i < ((n - f) / 2) + f; i++, j++) {
-            int temp = arr[n - j - 1];
-            arr[n - j - 1] = arr[i];
-            arr[i] = temp;
-        }
-        
-        for (int i = 0; i < n / 2; i++) {
-            int temp = arr[n - i - 1];
-            arr[n - i - 1] = arr[i];
-            arr[i] = temp;
+            reverseArr(arr, 0, f-1);
+            reverseArr(arr, f, n-1);
+            reverseArr(arr, 0, n-1);
+            
+            for (int i = 0; i < n; i++) {
+                System.out.print(arr[i] + " ");
+            }
+            System.out.println();
         }
 
-        for (int i = 0; i < n; i++) {
-            System.out.print(arr[i] + " ");
-        }
-        System.out.println();
     }
 }
