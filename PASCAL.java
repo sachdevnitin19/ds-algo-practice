@@ -13,10 +13,10 @@ class PASCAL{
         }
         System.out.println("ArrayList");
         List<List<Integer>> output=generatePascalList(length);
-        Iterator outerItr=output.iterator();
+        Iterator <List<Integer>> outerItr=output.iterator();
         while(outerItr.hasNext()){
             List<Integer> innerList=(List<Integer>)outerItr.next();
-            Iterator innerItr=innerList.iterator();
+            Iterator<Integer> innerItr=innerList.iterator();
             while(innerItr.hasNext()){
                 System.out.print((Integer)innerItr.next()+" ");
             }
@@ -39,7 +39,7 @@ class PASCAL{
     }
 
     public static List<List<Integer>> generatePascalList(int length) {
-        List<List<Integer>> l1=new ArrayList();
+        List<List<Integer>> l1=new ArrayList<List<Integer>>();
         for(int i=0;i<length;i++){
             List <Integer>l2=new ArrayList<Integer>();
             for(int j=0;j<=i;j++){
