@@ -24,7 +24,6 @@ class RearrangeArr {
             for (int i = 0; i < n; i++)
                 sb.append(arr[i] + " ");
             System.out.println(sb);
-
         }
     }
 }
