@@ -41,6 +41,7 @@ public class GenericLinkedList<T> {
             return false;
         if (pos == 0) {
             this.head = this.head.next;
+            this.length--;
             return true;
         }
         GenericNode<T> prev = null, curr = this.head;
@@ -54,6 +55,7 @@ public class GenericLinkedList<T> {
             return false;
         prev.next = curr.next;
         curr.next = null;
+        this.length--;
         return true;
     }
 
@@ -62,6 +64,7 @@ public class GenericLinkedList<T> {
             return false;
         if (this.head.data == value) {
             this.head = this.head.next;
+            this.length--;
             return true;
         }
         GenericNode<T> prev = null, curr = this.head;
@@ -73,6 +76,7 @@ public class GenericLinkedList<T> {
             return false;
         prev.next = curr.next;
         curr.next = null;
+        this.length--;
         return true;
     }
 
