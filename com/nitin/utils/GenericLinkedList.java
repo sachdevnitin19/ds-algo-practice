@@ -2,34 +2,35 @@ package com.nitin.utils;
 
 public class GenericLinkedList<T> {
     GenericNode<T> head;
-    int length=0;
-    public void insert(T nodeData){
-        GenericNode<T> newNode=new GenericNode<T>(nodeData);
-        if(this.length==0){
-            this.head=newNode;
-        }else if(this.length==1){
-            this.head.next=newNode;
-        }else{
-            GenericNode <T> tempNode=this.head;
-            while(tempNode.next!=null){
-                tempNode=tempNode.next;
+    int length = 0;
+
+    public void insert(T nodeData) {
+        GenericNode<T> newNode = new GenericNode<T>(nodeData);
+        if (this.length == 0) {
+            this.head = newNode;
+        } else if (this.length == 1) {
+            this.head.next = newNode;
+        } else {
+            GenericNode<T> tempNode = this.head;
+            while (tempNode.next != null) {
+                tempNode = tempNode.next;
             }
-            tempNode.next=newNode;
+            tempNode.next = newNode;
         }
         length++;
         return;
     }
 
-    public void print(){
-        if(this.head==null){
+    public void print() {
+        if (this.head == null) {
             return;
-        }else if(this.head.next==null){
+        } else if (this.head.next == null) {
             System.out.println(this.head.data);
-        }else{
-            GenericNode <T> tempNode=this.head;
-            while(tempNode!=null){
-                System.out.print(tempNode.data+" ");
-                tempNode=tempNode.next;
+        } else {
+            GenericNode<T> tempNode = this.head;
+            while (tempNode != null) {
+                System.out.print(tempNode.data + " ");
+                tempNode = tempNode.next;
             }
             System.out.println();
         }
@@ -73,5 +74,18 @@ public class GenericLinkedList<T> {
         prev.next = curr.next;
         curr.next = null;
         return true;
+    }
+
+    public void reverseList() {
+        if (this.length == 0 || this.length == 1)
+            return;
+        GenericNode<T> slow = null, curr = this.head, fast = null;
+        while (curr != null) {
+            fast=curr.next;
+            curr.next = slow;
+            slow = curr;
+            curr = fast;
+        }
+        this.head = slow;
     }
 }

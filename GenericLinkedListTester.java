@@ -10,6 +10,8 @@ class GenericLinkedListTester{
         l1.insert(3);
         l1.insert(4);
         l1.print();
+        l1.reverseList();
+        l1.print();
         l1.deleteNodeByPos(2);
         l1.print();
         l1.deleteNodeByValue(4);
