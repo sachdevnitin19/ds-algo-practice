@@ -92,4 +92,54 @@ public class LinkedList {
         this.head = prev;
         return;
     }
+
+
+    public static Node MergeSort(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node middle = getMiddle(head);
+        Node nextToMiddle = middle.next;
+
+        middle.next = null;
+        Node left = MergeSort(head);
+        Node right = MergeSort(nextToMiddle);
+        return MergeList(left, right);
+    }
+
+    public static Node MergeList(Node headA, Node headB) {
+        Node mergedHead = new Node(0), tempPtr = mergedHead;
+        while (headA != null && headB != null) {
+            if (headA.data < headB.data) {
+                tempPtr.next = headA;
+                headA = headA.next;
+            } else {
+                tempPtr.next = headB;
+                headB = headB.next;
+            }
+            tempPtr=tempPtr.next;
+        }
+        while (headA != null) {
+            tempPtr.next = headA;
+            headA = headA.next;
+            tempPtr=tempPtr.next;
+        }
+
+        while (headB != null) {
+            tempPtr.next = headB;
+            headB = headB.next;
+            tempPtr=tempPtr.next;
+        }
+        return mergedHead.next;
+    }
+
+    public static Node getMiddle(Node head) {
+        Node slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
 }

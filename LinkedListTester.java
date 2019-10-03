@@ -1,8 +1,9 @@
 import java.io.*;
-import com.nitin.utils.*;
+import com.nitin.utils.LinkedList;
+import com.nitin.utils.Node;
 
 class LinkedListTester {
-    
+
     public static Node mergeSortedLinkedList(LinkedList l1, LinkedList l2) {
         Node finalListHead = new Node(0), tmp = finalListHead;
 
@@ -37,24 +38,34 @@ class LinkedListTester {
         return finalListHead;
     }
 
+    public static boolean isPalindrome(LinkedList ll) {
+        Node middleElement = LinkedList.getMiddle(ll.head);
+        LinkedList llHalf = new LinkedList();
+        llHalf.head = middleElement.next;
+        middleElement.next = null;
+        llHalf.reverseLinkedList();
+
+        Node left = ll.head, right = llHalf.head;
+
+        while (left!=null&&right!=null) {
+            if(left.data!=right.data){
+                return false;
+            }
+            left=left.next;
+            right=right.next;
+        }
+        return true;
+    };
+
     public static void main(String[] args) throws IOException {
         LinkedList l1 = new LinkedList();
         l1.insert(1);
         l1.insert(2);
-        l1.insert(4);
-        System.out.println("Linked list length=" + l1.length());
+        
         l1.print();
 
-        LinkedList l2 = new LinkedList();
-        l2.insert(1);
-        l2.insert(3);
-        l2.insert(4);
-        l2.print();
+        System.out.println("Palindrome:-"+isPalindrome(l1));
 
-        LinkedList mergedList = new LinkedList();
-        mergedList.head = mergeSortedLinkedList(l1, l2);
-
-        mergedList.print();
-        System.out.println("Merged Linked list length=" + mergedList.length());
+        
     }
 }
