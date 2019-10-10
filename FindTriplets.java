@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Arrays;
+import java.util.*;
 
 class FindTriplets {
     public static void main(String args[]) throws IOException {
@@ -11,32 +11,29 @@ class FindTriplets {
             arr[i] = Integer.parseInt(tokens[i]);
         }
         int searchNum = Integer.parseInt(br.readLine());
-        findTriplets(arr, searchNum);
+        System.out.println(findTriplets(arr, searchNum));
     }
 
-    public static void findTriplets(int[] arr, int searchNum) {
+    public static List<List<Integer>> findTriplets(int[] arr, int searchNum) {
+        if(arr.length<3){
+            return Collections.emptyList();
+        }
         Arrays.sort(arr);
+        Set<List<Integer>> triplicates = new HashSet<List<Integer>>();
         for (int i = 0; i < arr.length - 1; i++) {
-            boolean found = false;
             int l = i + 1, r = arr.length - 1;
             while (l < r) {
                 int lrSum = arr[l] + arr[r];
                 if (arr[i] + lrSum == searchNum) {
-                    found = true;
-                    break;
+                    triplicates.add(Arrays.asList(arr[i], arr[l++], arr[r--]));
                 } else if (arr[i] + lrSum > searchNum) {
                     r--;
                 } else {
                     l++;
                 }
             }
-            if (found) {
-                System.out.printf("Triplets:- %d %d %d", arr[i], arr[l], arr[r]);
-                System.out.println();
-                return;
-            }
         }
-        System.out.println("No Triplets found");
-        return;
+
+        return new ArrayList<>(triplicates);
     }
 }

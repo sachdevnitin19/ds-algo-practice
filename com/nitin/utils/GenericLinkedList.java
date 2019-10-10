@@ -1,7 +1,7 @@
 package com.nitin.utils;
 
 public class GenericLinkedList<T> {
-    GenericNode<T> head;
+    public GenericNode<T> head;
     int length = 0;
 
     public void insert(T nodeData) {
