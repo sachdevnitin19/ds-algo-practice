@@ -2,19 +2,13 @@ package com.nitin.utils;
 
 public class GenericStack<T> {
     GenericNode<T> top;
-    Object T;
-    private int maxElem;
 
-    public GenericStack(Object dataType) {
+    public GenericStack() {
         this.top = null;
-        this.T = dataType;
-        if (this.T instanceof Integer) {
-            System.out.println("Integer stack");
-            this.maxElem = Integer.MIN_VALUE;
-        }
-
     }
-
+    public T peek(){
+        return this.top.data;
+    }
     public boolean push(T data) {
         GenericNode<T> temp = new GenericNode<T>(data);
         if (this.top == null) {

@@ -9,9 +9,11 @@ class GenericBinaryTreeTester {
         BT.insert(3);
         BT.insert(4);
         BT.insert(5);
+        BT.insert(6);
+        BT.insert(7);
 
         BT.levelOrderTraversal();
 
-        BT.inOrderTraversal();
+        BT.iterativeInOrderTraversal();
     }
 }

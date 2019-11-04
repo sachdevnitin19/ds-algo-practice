@@ -51,6 +51,43 @@ public class GenericBinaryTree<T> {
         inOrderTraversal(root.right);
     }
 
+    public void iterativeInOrderTraversal() {
+        System.out.println("#### Iterative In Order Traversal ####");
+        if (this.root == null) {
+            System.out.println("Tree is empty");
+            return;
+        } else if (this.root.left == null && this.root.right == null) {
+            System.out.println("Node data:- " + this.root.nodeData);
+            return;
+        } else {
+            GenericStack<GenericBinaryTreeNode<T>> BTS = new GenericStack<GenericBinaryTreeNode<T>>();
+            GenericBinaryTreeNode<T> ptr = this.root;
+            // not working
+            // BTS.push(this.root);
+            // while (!BTS.isStackEmpty()) {
+            // if (ptr != null) {
+            // BTS.push(ptr.left);
+            // ptr = ptr.left;
+            // } else {
+            // System.out.println("Node Data:- " + BTS.pop().nodeData);
+            // GenericBinaryTreeNode<T> prevRoot=BTS.pop();
+            // System.out.println("Node Data:- " + prevRoot.nodeData);
+            // ptr=prevRoot.right;
+            // }
+            // }
+
+            while (ptr != null || !BTS.isStackEmpty()) {
+                while(ptr!=null){
+                    BTS.push(ptr);
+                    ptr=ptr.left;
+                }
+                ptr=BTS.pop();
+                System.out.println("Node data:- "+ptr.nodeData);
+                ptr=ptr.right;
+            }
+        }
+    }
+
     public void preOrderTraversal() {
         System.out.println("#### Pre Order Traversal ####");
         this.preOrderTraversal(this.root);
