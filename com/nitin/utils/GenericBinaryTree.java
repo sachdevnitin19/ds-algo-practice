@@ -56,34 +56,18 @@ public class GenericBinaryTree<T> {
         if (this.root == null) {
             System.out.println("Tree is empty");
             return;
-        } else if (this.root.left == null && this.root.right == null) {
-            System.out.println("Node data:- " + this.root.nodeData);
-            return;
         } else {
             GenericStack<GenericBinaryTreeNode<T>> BTS = new GenericStack<GenericBinaryTreeNode<T>>();
             GenericBinaryTreeNode<T> ptr = this.root;
-            // not working
-            // BTS.push(this.root);
-            // while (!BTS.isStackEmpty()) {
-            // if (ptr != null) {
-            // BTS.push(ptr.left);
-            // ptr = ptr.left;
-            // } else {
-            // System.out.println("Node Data:- " + BTS.pop().nodeData);
-            // GenericBinaryTreeNode<T> prevRoot=BTS.pop();
-            // System.out.println("Node Data:- " + prevRoot.nodeData);
-            // ptr=prevRoot.right;
-            // }
-            // }
 
             while (ptr != null || !BTS.isStackEmpty()) {
-                while(ptr!=null){
+                while (ptr != null) {
                     BTS.push(ptr);
-                    ptr=ptr.left;
+                    ptr = ptr.left;
                 }
-                ptr=BTS.pop();
-                System.out.println("Node data:- "+ptr.nodeData);
-                ptr=ptr.right;
+                ptr = BTS.pop();
+                System.out.println("Node data:- " + ptr.nodeData);
+                ptr = ptr.right;
             }
         }
     }

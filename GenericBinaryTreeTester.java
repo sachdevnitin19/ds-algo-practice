@@ -5,6 +5,7 @@ class GenericBinaryTreeTester {
         GenericBinaryTree<Integer> BT = new GenericBinaryTree<Integer>();
 
         BT.insert(1);
+        BT.iterativeInOrderTraversal();
         BT.insert(2);
         BT.insert(3);
         BT.insert(4);
