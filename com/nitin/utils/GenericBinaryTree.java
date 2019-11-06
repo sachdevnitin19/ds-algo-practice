@@ -119,4 +119,39 @@ public class GenericBinaryTree<T> {
         }
     }
 
+    public int maxDepth() {
+        return this.maxDepth(this.root);
+    }
+
+    private int maxDepth(GenericBinaryTreeNode<T> root) {
+        if (root == null) {
+            return 0;
+        } else {
+            int lSubTreeDepth = maxDepth(root.left);
+            int rSubTreeDepth = maxDepth(root.right);
+
+            return Math.max(lSubTreeDepth, rSubTreeDepth) + 1;
+        }
+    }
+
+    public int iterativeMaxDepth() {
+        int maxTreeDepth = 0;
+        GenericQueue<GenericBinaryTreeNode<T>> BTQ = new GenericQueue<GenericBinaryTreeNode<T>>();
+        BTQ.enqueue(this.root);
+        while (!BTQ.isEmpty()) {
+            int currLevelNodesCount = BTQ.length();
+            maxTreeDepth++;
+            while (currLevelNodesCount-- > 0) {
+                GenericBinaryTreeNode<T> currNode=BTQ.dequeue();
+                if(currNode.left!=null){
+                    BTQ.enqueue(currNode.left);
+                }
+                if(currNode.right!=null){
+                    BTQ.enqueue(currNode.right);
+                }
+            }
+        }
+        return maxTreeDepth;
+    }
+
 }
