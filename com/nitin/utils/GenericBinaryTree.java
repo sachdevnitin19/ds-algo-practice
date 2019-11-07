@@ -38,6 +38,49 @@ public class GenericBinaryTree<T> {
         return true;
     }
 
+    public boolean delete(T deleteNodeData) {
+        System.out.println("delete node started");
+        if (this.root == null) {
+            return false;
+        }
+        GenericBinaryTreeNode<T> nodeToBeDeleted = null, secondLastLeafNode = null, lastLeafNode = null,
+                currNode = null;
+        GenericQueue<GenericBinaryTreeNode<T>> BQ = new GenericQueue<GenericBinaryTreeNode<T>>();
+        BQ.enqueue(this.root);
+        while (!BQ.isEmpty()) {
+            currNode = BQ.dequeue();
+            if (currNode.nodeData == deleteNodeData) {
+                nodeToBeDeleted = currNode;
+            }
+            if (currNode.left != null) {
+                BQ.enqueue(currNode.left);
+            }
+            if (currNode.right != null) {
+                BQ.enqueue(currNode.right);
+            }
+            if (currNode.right != null && currNode.right.left == null && currNode.right.right == null) {
+                secondLastLeafNode = currNode;
+                lastLeafNode = currNode.right;
+            } else if (currNode.left != null && currNode.left.left == null && currNode.left.right == null) {
+                secondLastLeafNode = currNode;
+                lastLeafNode = currNode.left;
+            }
+        }
+        if (nodeToBeDeleted == null) {
+            // node not found
+            return false;
+        }
+        nodeToBeDeleted.nodeData = lastLeafNode.nodeData;
+        System.out.println(
+                "secondLastLeafNode= " + secondLastLeafNode.nodeData + "lastLeafNode= " + lastLeafNode.nodeData);
+        if (secondLastLeafNode.right == lastLeafNode) {
+            secondLastLeafNode.right = null;
+        } else {
+            secondLastLeafNode.left = null;
+        }
+        return true;
+    }
+
     public void inOrderTraversal() {
         System.out.println("#### In Order Traversal ####");
         this.inOrderTraversal(this.root);
@@ -142,11 +185,11 @@ public class GenericBinaryTree<T> {
             int currLevelNodesCount = BTQ.length();
             maxTreeDepth++;
             while (currLevelNodesCount-- > 0) {
-                GenericBinaryTreeNode<T> currNode=BTQ.dequeue();
-                if(currNode.left!=null){
+                GenericBinaryTreeNode<T> currNode = BTQ.dequeue();
+                if (currNode.left != null) {
                     BTQ.enqueue(currNode.left);
                 }
-                if(currNode.right!=null){
+                if (currNode.right != null) {
                     BTQ.enqueue(currNode.right);
                 }
             }
