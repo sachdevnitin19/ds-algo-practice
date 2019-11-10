@@ -207,12 +207,44 @@ public class GenericBinaryTree<T> {
         }
     }
 
-    public T returnRightMostLeaf() {
+    public boolean deleteNodeRecursive(T deleteNodeData) {
+        GenericBinaryTreeNode<T> nodeTobeDeletedRef = null;
+        nodeTobeDeletedRef = findNodeRecursive(root, deleteNodeData, nodeTobeDeletedRef);
+        if (nodeTobeDeletedRef == null) {
+            return false;
+        }
+        nodeMaxLevel deepNodeObj = this.returnRightMostLeaf();
+        nodeTobeDeletedRef.nodeData = deepNodeObj.deepestNode.nodeData;
+        if (deepNodeObj.deepestNodeParent.left.nodeData == deepNodeObj.deepestNode.nodeData) {
+            deepNodeObj.deepestNodeParent.left = null;
+        } else {
+            deepNodeObj.deepestNodeParent.right = null;
+        }
+        return true;
+    }
+
+    public GenericBinaryTreeNode<T> findNodeRecursive(GenericBinaryTreeNode<T> root, T nodeValueToFind,
+            GenericBinaryTreeNode<T> nodeTofind) {
+        if (root == null) {
+            return nodeTofind;
+        }
+        if (root.nodeData == nodeValueToFind) {
+            nodeTofind = root;
+            return nodeTofind;
+        }
+        GenericBinaryTreeNode<T> leftSubTreeResult = findNodeRecursive(root.left, nodeValueToFind, nodeTofind);
+        GenericBinaryTreeNode<T> rightSubTreeResult = findNodeRecursive(root.right, nodeValueToFind, nodeTofind);
+        return leftSubTreeResult != null ? leftSubTreeResult : rightSubTreeResult;
+    }
+
+    //This method return rightmost node in tree 
+    //while maintaning completeness of tree
+    public nodeMaxLevel returnRightMostLeaf() {
         nodeMaxLevel maxLevelRef = new nodeMaxLevel();
         this.returnRightMostLeaf(this.root, null, 1, maxLevelRef, false);
         System.out.println("#### Deepest Node parent:- " + maxLevelRef.deepestNodeParent.nodeData + " DeepestNode:- "
                 + maxLevelRef.deepestNode.nodeData);
-        return maxLevelRef.deepestNode.nodeData;
+        return maxLevelRef;
     }
 
     public void returnRightMostLeaf(GenericBinaryTreeNode<T> root, GenericBinaryTreeNode<T> parent, int levelSoFar,

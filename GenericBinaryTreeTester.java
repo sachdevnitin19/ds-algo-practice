@@ -25,8 +25,9 @@ class GenericBinaryTreeTester {
         BT1.insert(9);
 
         BT1.levelOrderTraversal();
-        System.out.println("Rightmost leaf:- " + BT1.returnRightMostLeaf());
-
+        // System.out.println("Rightmost leaf:- " + BT1.returnRightMostLeaf());
+        System.out.println(BT1.deleteNodeRecursive(4) ? "Node Deleted" : "Node not found");
+        BT1.levelOrderTraversal();
         //example tree 2
         //      1
         //     /  \
@@ -45,7 +46,8 @@ class GenericBinaryTreeTester {
         BT2.root.left.left.left = new GenericBinaryTreeNode<Integer>(5);
         BT2.root.left.left.left.right = new GenericBinaryTreeNode<Integer>(6);
 
-        BT2.levelOrderTraversal();
-        System.out.println("Rightmost leaf:- " + BT2.returnRightMostLeaf());
+        // BT2.levelOrderTraversal();
+        // System.out.println("Rightmost leaf:- " + BT2.returnRightMostLeaf());
+
     }
 }
