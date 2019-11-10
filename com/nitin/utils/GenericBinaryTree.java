@@ -1,7 +1,7 @@
 package com.nitin.utils;
 
 public class GenericBinaryTree<T> {
-    GenericBinaryTreeNode<T> root;
+    public GenericBinaryTreeNode<T> root;
 
     public GenericBinaryTree() {
         this.root = null;
@@ -197,4 +197,37 @@ public class GenericBinaryTree<T> {
         return maxTreeDepth;
     }
 
+    private class nodeMaxLevel {
+        int maxLevel;
+        GenericBinaryTreeNode<T> deepestNode, deepestNodeParent;
+
+        nodeMaxLevel() {
+            this.maxLevel = 0;
+            this.deepestNode = this.deepestNodeParent = null;
+        }
+    }
+
+    public T returnRightMostLeaf() {
+        nodeMaxLevel maxLevelRef = new nodeMaxLevel();
+        this.returnRightMostLeaf(this.root, null, 1, maxLevelRef, false);
+        System.out.println("#### Deepest Node parent:- " + maxLevelRef.deepestNodeParent.nodeData + " DeepestNode:- "
+                + maxLevelRef.deepestNode.nodeData);
+        return maxLevelRef.deepestNode.nodeData;
+    }
+
+    public void returnRightMostLeaf(GenericBinaryTreeNode<T> root, GenericBinaryTreeNode<T> parent, int levelSoFar,
+            nodeMaxLevel maxLevelRef, boolean isRightNull) {
+        if (root == null) {
+            return;
+        }
+
+        if (levelSoFar >= maxLevelRef.maxLevel && isRightNull) {
+            maxLevelRef.maxLevel = levelSoFar;
+            maxLevelRef.deepestNode = root;
+            maxLevelRef.deepestNodeParent = parent;
+        }
+
+        returnRightMostLeaf(root.left, root, levelSoFar + 1, maxLevelRef, root.right == null);
+        returnRightMostLeaf(root.right, root, levelSoFar + 1, maxLevelRef, root.right != null);
+    }
 }
