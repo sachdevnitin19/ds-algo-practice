@@ -197,25 +197,48 @@ public class GenericBinaryTree<T> {
         return maxTreeDepth;
     }
 
+    public boolean doesNodeExists(T nodeDataToFind) {
+        GenericBinaryTreeNode<T> nodeToFind = null;
+        nodeToFind = this.findNodeRecursive(this.root, nodeDataToFind, nodeToFind);
+        return nodeToFind != null;
+    }
+
+    public GenericBinaryTreeNode<T> findNodeRecursive(GenericBinaryTreeNode<T> root, T nodeValueToFind,
+            GenericBinaryTreeNode<T> nodeToFind) {
+        if (root == null) {
+            return nodeToFind;
+        }
+        if (root.nodeData == nodeValueToFind) {
+            nodeToFind = root;
+            return nodeToFind;
+        }
+        GenericBinaryTreeNode<T> leftSubTreeResult = findNodeRecursive(root.left, nodeValueToFind, nodeToFind);
+        GenericBinaryTreeNode<T> rightSubTreeResult = findNodeRecursive(root.right, nodeValueToFind, nodeToFind);
+        return leftSubTreeResult != null ? leftSubTreeResult : rightSubTreeResult;
+    }
+
+    //class to maintain state while finding and deleting node recursively.
     private class nodeMaxLevel {
         int maxLevel;
-        GenericBinaryTreeNode<T> deepestNode, deepestNodeParent;
+        GenericBinaryTreeNode<T> deepestNode, deepestNodeParent, nodeToDelete;
 
         nodeMaxLevel() {
             this.maxLevel = 0;
-            this.deepestNode = this.deepestNodeParent = null;
+            this.deepestNode = this.deepestNodeParent = nodeToDelete = null;
         }
     }
 
-    public boolean deleteNodeRecursive(T deleteNodeData) {
-        GenericBinaryTreeNode<T> nodeTobeDeletedRef = null;
-        nodeTobeDeletedRef = findNodeRecursive(root, deleteNodeData, nodeTobeDeletedRef);
-        if (nodeTobeDeletedRef == null) {
+    //delete node in tree and replace it with rightmost deepest node
+    //so that completeness of binary tree is maintained.
+    public boolean deleteNodeRecursively(T deleteNodeData) {
+        nodeMaxLevel deepNodeObj = new nodeMaxLevel();
+        this.findNodesForDeletion(this.root, null, 1, deepNodeObj, false, deleteNodeData);
+        if (deepNodeObj.nodeToDelete == null) {
             return false;
         }
-        nodeMaxLevel deepNodeObj = this.returnRightMostLeaf();
-        nodeTobeDeletedRef.nodeData = deepNodeObj.deepestNode.nodeData;
-        if (deepNodeObj.deepestNodeParent.left.nodeData == deepNodeObj.deepestNode.nodeData) {
+        deepNodeObj.nodeToDelete.nodeData = deepNodeObj.deepestNode.nodeData;
+        if (deepNodeObj.deepestNodeParent.left != null
+                && deepNodeObj.deepestNodeParent.left.nodeData == deepNodeObj.deepestNode.nodeData) {
             deepNodeObj.deepestNodeParent.left = null;
         } else {
             deepNodeObj.deepestNodeParent.right = null;
@@ -223,32 +246,9 @@ public class GenericBinaryTree<T> {
         return true;
     }
 
-    public GenericBinaryTreeNode<T> findNodeRecursive(GenericBinaryTreeNode<T> root, T nodeValueToFind,
-            GenericBinaryTreeNode<T> nodeTofind) {
-        if (root == null) {
-            return nodeTofind;
-        }
-        if (root.nodeData == nodeValueToFind) {
-            nodeTofind = root;
-            return nodeTofind;
-        }
-        GenericBinaryTreeNode<T> leftSubTreeResult = findNodeRecursive(root.left, nodeValueToFind, nodeTofind);
-        GenericBinaryTreeNode<T> rightSubTreeResult = findNodeRecursive(root.right, nodeValueToFind, nodeTofind);
-        return leftSubTreeResult != null ? leftSubTreeResult : rightSubTreeResult;
-    }
-
-    //This method return rightmost node in tree 
-    //while maintaning completeness of tree
-    public nodeMaxLevel returnRightMostLeaf() {
-        nodeMaxLevel maxLevelRef = new nodeMaxLevel();
-        this.returnRightMostLeaf(this.root, null, 1, maxLevelRef, false);
-        System.out.println("#### Deepest Node parent:- " + maxLevelRef.deepestNodeParent.nodeData + " DeepestNode:- "
-                + maxLevelRef.deepestNode.nodeData);
-        return maxLevelRef;
-    }
-
-    public void returnRightMostLeaf(GenericBinaryTreeNode<T> root, GenericBinaryTreeNode<T> parent, int levelSoFar,
-            nodeMaxLevel maxLevelRef, boolean isRightNull) {
+    //finds node which is to be deleted and deepest rightmost node
+    private void findNodesForDeletion(GenericBinaryTreeNode<T> root, GenericBinaryTreeNode<T> parent, int levelSoFar,
+            nodeMaxLevel maxLevelRef, boolean isRightNull, T nodeToFind) {
         if (root == null) {
             return;
         }
@@ -258,8 +258,11 @@ public class GenericBinaryTree<T> {
             maxLevelRef.deepestNode = root;
             maxLevelRef.deepestNodeParent = parent;
         }
-
-        returnRightMostLeaf(root.left, root, levelSoFar + 1, maxLevelRef, root.right == null);
-        returnRightMostLeaf(root.right, root, levelSoFar + 1, maxLevelRef, root.right != null);
+        if (root.nodeData == nodeToFind) {
+            maxLevelRef.nodeToDelete = root;
+        }
+        findNodesForDeletion(root.left, root, levelSoFar + 1, maxLevelRef, root.right == null, nodeToFind);
+        findNodesForDeletion(root.right, root, levelSoFar + 1, maxLevelRef, root.right != null, nodeToFind);
     }
+
 }
