@@ -3,9 +3,9 @@ import com.nitin.utils.GenericStack;
 class QueueWithTwoStacks<T> {
     GenericStack<T> s1, s2;
 
-    public QueueWithTwoStacks(Object dataType) {
-        this.s1 = new GenericStack<T>(dataType);
-        this.s2 = new GenericStack<T>(dataType);
+    public QueueWithTwoStacks() {
+        this.s1 = new GenericStack<T>();
+        this.s2 = new GenericStack<T>();
     }
 
     public boolean enqueue(T data) {
@@ -33,7 +33,7 @@ class QueueWithTwoStacks<T> {
 class QueueWithTwoStacksTester {
     public static void main(String args[]) {
         
-        QueueWithTwoStacks<Integer> q1 = new QueueWithTwoStacks<Integer>(Integer);
+        QueueWithTwoStacks<Integer> q1 = new QueueWithTwoStacks<Integer>();
 
         q1.enqueue(1);
         System.out.println(q1.dequeue());
