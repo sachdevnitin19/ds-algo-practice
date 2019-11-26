@@ -265,4 +265,65 @@ public class GenericBinaryTree<T> {
         findNodesForDeletion(root.right, root, levelSoFar + 1, maxLevelRef, root.right != null, nodeToFind);
     }
 
+    public boolean isTreeSymmetric() {
+        GenericQueue<GenericBinaryTreeNode<T>> BQ = new GenericQueue<GenericBinaryTreeNode<T>>();
+        BQ.enqueue(this.root);
+        BQ.enqueue(this.root);
+        while (!BQ.isEmpty()) {
+            GenericBinaryTreeNode<T> node1 = BQ.dequeue();
+            GenericBinaryTreeNode<T> node2 = BQ.dequeue();
+            if (node1.nodeData != node2.nodeData) {
+                return false;
+            }
+            if (node1.left != null) {
+                BQ.enqueue(node1.left);
+            }
+            if (node2.right != null) {
+                BQ.enqueue(node2.right);
+            }
+
+            if (node2.left != null) {
+                BQ.enqueue(node2.left);
+            }
+            if (node1.right != null) {
+                BQ.enqueue(node1.right);
+            }
+        }
+        return true;
+    }
+
+    public void convertToMirror() {
+        convertToMirrorRecursively(this.root);
+    }
+    //recursive implementation of coverting tree to its binary image
+    //doing post order traversal and swapping left and right child
+    private void convertToMirrorRecursively(GenericBinaryTreeNode<T> root) {
+        if (root == null) {
+            return;
+        }
+        convertToMirrorRecursively(root.left);
+        convertToMirrorRecursively(root.right);
+        GenericBinaryTreeNode<T> temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+    }
+    
+    //iterative implementation
+    public void convertToMirrorIteratively() {
+        GenericQueue<GenericBinaryTreeNode<T>> levelQueue=new GenericQueue<GenericBinaryTreeNode<T>>();
+        levelQueue.enqueue(this.root);
+        while(!levelQueue.isEmpty()){
+            int currLevel=levelQueue.length();
+            while(currLevel-->0){
+                GenericBinaryTreeNode<T> currNode=levelQueue.dequeue();
+                if(currNode!=null){
+                    levelQueue.enqueue(currNode.left);
+                    levelQueue.enqueue(currNode.right);
+                    GenericBinaryTreeNode<T> temp=currNode.left;
+                    currNode.left=currNode.right;
+                    currNode.right=temp;
+                }
+            }
+        }
+    }
 }

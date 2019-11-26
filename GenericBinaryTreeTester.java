@@ -23,15 +23,19 @@ class GenericBinaryTreeTester {
         BT1.insert(7);
         BT1.insert(8);
         BT1.insert(9);
+        BT1.insert(10);
 
         BT1.levelOrderTraversal();
-        
+        BT1.convertToMirror();
+        // BT1.convertToMirrorIteratively();
+        BT1.levelOrderTraversal();
         System.out
                 .println(BT1.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         System.out.println(BT1.deleteNodeRecursively(4) ? "Node Deleted" : "Node not found");
         System.out
                 .println(BT1.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         BT1.levelOrderTraversal();
+        System.out.println(BT1.isTreeSymmetric()?"Tree is Symmetric":"Tree is not Symmetric");
 
         //example tree 2
         //      1
@@ -58,6 +62,16 @@ class GenericBinaryTreeTester {
         System.out
                 .println(BT2.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         BT2.levelOrderTraversal();
+        System.out.println(BT2.isTreeSymmetric()?"Tree is Symmetric":"Tree is not Symmetric");
+        GenericBinaryTree<Integer> BT3 = new GenericBinaryTree<Integer>();
+        BT3.insert(1);
+        BT3.insert(2);
+        BT3.insert(2);
+        BT3.insert(3);
+        BT3.insert(4);
+        BT3.insert(4);
+        BT3.insert(3);
 
+        System.out.println(BT3.isTreeSymmetric()?"Tree is Symmetric":"Tree is not Symmetric");
     }
 }

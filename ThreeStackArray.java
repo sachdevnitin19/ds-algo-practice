@@ -1,11 +1,11 @@
 import java.io.*;
 import java.util.Arrays;
 
-class Stack {
+class ArrayStack {
     int top, start, end;
     int stackArr[];
 
-    public Stack(int[] arr, int start, int end) {
+    public ArrayStack(int[] arr, int start, int end) {
         top = -1;
         this.stackArr = arr;
         this.start = start;
@@ -26,7 +26,7 @@ class Stack {
 
     public boolean push(int x) {
         if (top == end) {
-            System.out.println("Stack full");
+            System.out.println("ArrayStack full");
             return false;
         } else if (top == -1) {
             top = this.start;
@@ -67,9 +67,9 @@ class ThreeStackArray {
         int eachStackLen = stackSize / 3;
         int start = 0, mid1 = start + eachStackLen - 1, mid2 = mid1 + eachStackLen, end = stackSize - 1;
         System.out.println(start + " " + mid1 + " " + mid2 + " " + end);
-        Stack s1 = new Stack(stackArr, start, mid1);
-        Stack s2 = new Stack(stackArr, mid1 + 1, mid2);
-        Stack s3 = new Stack(stackArr, mid2 + 1, end);
+        ArrayStack s1 = new ArrayStack(stackArr, start, mid1);
+        ArrayStack s2 = new ArrayStack(stackArr, mid1 + 1, mid2);
+        ArrayStack s3 = new ArrayStack(stackArr, mid2 + 1, end);
 
         s1.push(5);
         s2.push(3);
