@@ -295,6 +295,7 @@ public class GenericBinaryTree<T> {
     public void convertToMirror() {
         convertToMirrorRecursively(this.root);
     }
+
     //recursive implementation of coverting tree to its binary image
     //doing post order traversal and swapping left and right child
     private void convertToMirrorRecursively(GenericBinaryTreeNode<T> root) {
@@ -307,23 +308,64 @@ public class GenericBinaryTree<T> {
         root.left = root.right;
         root.right = temp;
     }
-    
+
     //iterative implementation
     public void convertToMirrorIteratively() {
-        GenericQueue<GenericBinaryTreeNode<T>> levelQueue=new GenericQueue<GenericBinaryTreeNode<T>>();
+        GenericQueue<GenericBinaryTreeNode<T>> levelQueue = new GenericQueue<GenericBinaryTreeNode<T>>();
         levelQueue.enqueue(this.root);
-        while(!levelQueue.isEmpty()){
-            int currLevel=levelQueue.length();
-            while(currLevel-->0){
-                GenericBinaryTreeNode<T> currNode=levelQueue.dequeue();
-                if(currNode!=null){
+        while (!levelQueue.isEmpty()) {
+            int currLevel = levelQueue.length();
+            while (currLevel-- > 0) {
+                GenericBinaryTreeNode<T> currNode = levelQueue.dequeue();
+                if (currNode != null) {
                     levelQueue.enqueue(currNode.left);
                     levelQueue.enqueue(currNode.right);
-                    GenericBinaryTreeNode<T> temp=currNode.left;
-                    currNode.left=currNode.right;
-                    currNode.right=temp;
+                    GenericBinaryTreeNode<T> temp = currNode.left;
+                    currNode.left = currNode.right;
+                    currNode.right = temp;
                 }
             }
         }
+    }
+    //Check whether a binary tree is balance or not.
+    //A balanced binary tree is defined as height difference between two leaf nodes is not 
+    //greater than 1.
+
+    class HeightState{
+        int maxHeight;
+        boolean isSubTreeBalanced;
+        HeightState(){
+            this.maxHeight=0;
+            this.isSubTreeBalanced=false;
+        }
+    }
+    public boolean isTreeBalanced() {
+        HeightState treeHS = isSubTreeBalanced(root);
+        return treeHS.isSubTreeBalanced;
+    }
+
+    public HeightState isSubTreeBalanced(GenericBinaryTreeNode<T> root) {
+        HeightState HS=new HeightState();
+        if (root == null) {
+            HS.isSubTreeBalanced=true;
+            return HS;
+        }
+        
+        HeightState leftSubTreeHS = isSubTreeBalanced(root.left);
+        if(!leftSubTreeHS.isSubTreeBalanced){
+            return HS;
+        }
+
+        HeightState rightSubTreeHS = isSubTreeBalanced(root.right);
+        if(!rightSubTreeHS.isSubTreeBalanced){
+            return HS;
+        }
+
+        if(Math.abs(leftSubTreeHS.maxHeight-rightSubTreeHS.maxHeight)>1){
+            return HS;
+        }
+        HS.maxHeight=(leftSubTreeHS.maxHeight>rightSubTreeHS.maxHeight?leftSubTreeHS.maxHeight:rightSubTreeHS.maxHeight)+1;
+        HS.isSubTreeBalanced=true;
+        return HS;
     }
 }
