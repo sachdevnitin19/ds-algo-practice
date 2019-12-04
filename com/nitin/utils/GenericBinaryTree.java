@@ -327,9 +327,10 @@ public class GenericBinaryTree<T> {
             }
         }
     }
-    //Check whether a binary tree is balance or not.
-    //A balanced binary tree is defined as height difference between two leaf nodes is not 
-    //greater than 1.
+    
+    //Check whether a binary tree is height balanced or not.
+    //Height-balanced binary tree : is defined as a binary tree in which the depth of the two subtrees of every node 
+    //never differ by more than one.
 
     class HeightState{
         int maxHeight;
