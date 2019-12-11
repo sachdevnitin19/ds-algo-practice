@@ -1,6 +1,6 @@
 package com.nitin.utils;
 
-public class LinkedList {
+public class SinglyLinkedList {
     public Node head;
 
     public void insert(int num) {

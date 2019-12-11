@@ -1,10 +1,10 @@
 import java.io.*;
-import com.nitin.utils.LinkedList;
+import com.nitin.utils.SinglyLinkedList;
 import com.nitin.utils.Node;
 
 class LinkedListTester {
 
-    public static Node mergeSortedLinkedList(LinkedList l1, LinkedList l2) {
+    public static Node mergeSortedLinkedList(SinglyLinkedList l1, SinglyLinkedList l2) {
         Node finalListHead = new Node(0), tmp = finalListHead;
 
         while (l1.head != null && l2.head != null) {
@@ -38,9 +38,9 @@ class LinkedListTester {
         return finalListHead;
     }
 
-    public static boolean isPalindrome(LinkedList ll) {
-        Node middleElement = LinkedList.getMiddle(ll.head);
-        LinkedList llHalf = new LinkedList();
+    public static boolean isPalindrome(SinglyLinkedList ll) {
+        Node middleElement = SinglyLinkedList.getMiddle(ll.head);
+        SinglyLinkedList llHalf = new SinglyLinkedList();
         llHalf.head = middleElement.next;
         middleElement.next = null;
         llHalf.reverseLinkedList();
@@ -58,7 +58,7 @@ class LinkedListTester {
     };
 
     public static void main(String[] args) throws IOException {
-        LinkedList l1 = new LinkedList();
+        SinglyLinkedList l1 = new SinglyLinkedList();
         l1.insert(1);
         l1.insert(2);
         
