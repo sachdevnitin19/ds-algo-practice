@@ -8,15 +8,12 @@ class AdjacencyListGraphTester {
         MyGraph.addEdge(0, 4);
         MyGraph.addEdge(1, 4);
         MyGraph.addEdge(1, 3);
-        MyGraph.addEdge(1, 0);
         MyGraph.addEdge(1, 2);
-        MyGraph.addEdge(4, 0);
-        MyGraph.addEdge(4, 1);
         MyGraph.addEdge(4, 3);
-        MyGraph.addEdge(3, 4);
-        MyGraph.addEdge(3, 1);
         MyGraph.addEdge(3, 2);
 
         MyGraph.printBFS();
+
+        MyGraph.printDFS();
     }
 }

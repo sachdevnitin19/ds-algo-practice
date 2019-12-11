@@ -3,6 +3,7 @@ package com.nitin.utils;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 //undirected unweighted graph.
 public class AdjacencyListGraph {
@@ -37,6 +38,30 @@ public class AdjacencyListGraph {
                         while (ptr != null) {
                             nodeToVisit.add(ptr.data);
                             ptr = ptr.next;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    public void printDFS() {
+        HashSet<Integer> nodesVisited = new HashSet<Integer>();
+        Stack<Integer> nodesStack = new Stack<Integer>();
+
+        for (int i = 0; i < noOfVertices; i++) {
+            if (!nodesVisited.contains(i)) {
+                nodesStack.push(i);
+                while (!nodesStack.isEmpty()) {
+                    int currNode = nodesStack.pop();
+                    if (!nodesVisited.contains(currNode)) {
+                        System.out.print(currNode+" ");
+                        nodesVisited.add(currNode);
+                        Node ptr=this.adjList[currNode].head;
+                        while(ptr!=null){
+                            nodesStack.push(ptr.data);
+                            ptr=ptr.next;
                         }
                     }
                 }
