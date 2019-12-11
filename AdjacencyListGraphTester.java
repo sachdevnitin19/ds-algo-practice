@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 import com.nitin.utils.AdjacencyListGraph;
 
 class AdjacencyListGraphTester {
