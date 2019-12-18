@@ -1,52 +1,75 @@
-import java.util.ArrayList;
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        //creating course graph
-        GraphNode[] CourseGraph=new GraphNode[numCourses];
+    
+    class GraphNode{
+        int courseNum,noOfDependencies;
+        ArrayList<GraphNode> dependants;
+
+        public GraphNode(int courseNum){
+            this.noOfDependencies=0;
+            this.courseNum=courseNum;
+            this.dependants=new ArrayList<GraphNode>();
+        }
+
+        public void addDependant(GraphNode dependantCourse){
+            this.dependants.add(dependantCourse);
+            dependantCourse.noOfDependencies++;
+        }
+    }
+    ArrayList<GraphNode> CourseGraph;
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        this.CourseGraph=new ArrayList<GraphNode>(numCourses);
         for(int i=0;i<prerequisites.length;i++){
-            //creating parent course graph node if not exists
-            if(CourseGraph[prerequisites[i][1]]==null){
-                CourseGraph[prerequisites[i][1]]=new GraphNode(prerequisites[i][1]);
+            GraphNode parentCourse=CourseGraph.get(prerequisites[i][1]);
+            if(parentCourse==null){
+                parentCourse=new GraphNode(prerequisites[i][1]);
+                CourseGraph.add(prerequisites[i][1],parentCourse);
             }
-            //creating child course graph node if not exists
-            if(CourseGraph[prerequisites[i][0]]==null){
-                CourseGraph[prerequisites[i][0]]=new GraphNode(prerequisites[i][0]);
+            
+            GraphNode childCourse=CourseGraph.get(prerequisites[i][0]);
+            if(childCourse==null){
+                childCourse=new GraphNode(prerequisites[i][0]);
+                CourseGraph.add(prerequisites[i][0], childCourse);
             }
-            CourseGraph[prerequisites[i][1]].addDependant(CourseGraph[prerequisites[i][0]]);
+            parentCourse.addDependant(childCourse);
+        }
+        GraphNode[] topOrderGraphNodes=new GraphNode[numCourses];
+        int endOfList=0,toBeProcessed=0;
+        endOfList=addZeroInDegreeNodes(this.CourseGraph,topOrderGraphNodes,endOfList);
+        while(toBeProcessed<numCourses){
+            GraphNode currGraphNode=topOrderGraphNodes[toBeProcessed];
+            if(currGraphNode==null){
+                return new int[0];
+            }
+            
+            ArrayList<GraphNode> currChildren=currGraphNode.dependants;
+            Iterator<GraphNode> dependantsItr=currChildren.iterator();
+            while(dependantsItr.hasNext()){
+                dependantsItr.next().noOfDependencies--;
+            }
+            
+            endOfList=addZeroInDegreeNodes(currChildren,topOrderGraphNodes,endOfList);
+            toBeProcessed++;    
         }
         
-        GraphNode[] TopologicalOrder=new GraphNode[numCourses];
-        int currIndex=findNodesWithZeroDependency(CourseGraph,TopologicalOrder,0);
-        while(currIndex<CourseGraph.length){
-            if(TopologicalOrder[currIndex]==null){
-                return false;
-            }
+        int topOrder[]=new int[numCourses];
+        for(int i=0;i<numCourses;i++){
+            topOrder[i]=topOrderGraphNodes[i].courseNum;
         }
-        
-        return true;
+        return topOrder;
     }
     
-    public int findNodesWithZeroDependency(GraphNode[] CourseGraph,GraphNode[] TopologicalOrder, int currIndex){
-        for(int i=0;i<CourseGraph.length;i++){
-            if(CourseGraph[i].noOfDependencies==0){
-                TopologicalOrder[currIndex]=CourseGraph[i];
-                currIndex++;
-                
+    public int addZeroInDegreeNodes(ArrayList<GraphNode> nodesToProcess,GraphNode[] topOrder, int endOfList){
+        Iterator<GraphNode> courseGraphItr=nodesToProcess.iterator();
+        while(courseGraphItr.hasNext()){
+            GraphNode currCourse=courseGraphItr.next();
+            if(currCourse.noOfDependencies==0){
+                topOrder[endOfList]=currCourse;
+                endOfList++;
             }
         }
-        return currIndex;
+        
+        return endOfList;
     }
+    
 }
 
-class GraphNode{
-    int noOfDependencies,courseNo;
-    public GraphNode(int courseNo){
-        this.courseNo=courseNo;
-        this.noOfDependencies=0;   
-    }
-    ArrayList<GraphNode> dependants=new ArrayList<GraphNode>();
-    public void addDependant(GraphNode course){
-        this.dependants.add(course);
-        course.noOfDependencies++;
-    }
-}
