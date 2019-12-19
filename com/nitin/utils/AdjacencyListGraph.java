@@ -50,7 +50,27 @@ public class AdjacencyListGraph {
         }
         System.out.println();
     }
-
+    public boolean doesPathExists(int src, int dest){
+        HashSet<Integer> visitedNode=new HashSet<Integer>();
+        Queue<Integer> nodeToVisit=new LinkedList<Integer>();
+        nodeToVisit.add(src);
+        while(!nodeToVisit.isEmpty()){
+            int currNode=nodeToVisit.remove();
+            Node ptr=this.adjList[currNode].head;
+            visitedNode.add(currNode);
+            while(ptr!=null){
+                if(ptr.data==dest){
+                    return true;
+                }
+                if(!visitedNode.contains(ptr.data)){
+                    nodeToVisit.add(ptr.data);    
+                }
+                ptr=ptr.next;
+            }
+        }
+        
+        return false;
+    }
     public void printDFS() {
         HashSet<Integer> nodesVisited = new HashSet<Integer>();
         Stack<Integer> nodesStack = new Stack<Integer>();
