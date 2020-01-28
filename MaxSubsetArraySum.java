@@ -6,7 +6,9 @@
     Example:-   array=[12, 23, 5]
                 max sum=28, {23,5} subset produces 28. 
                 You cannot use {12,23} since they contain same digit i.e 2
-
+    Time Complexity:- O(n) 
+    Space Complexity:- O(2*n) => O(n)
+    where n is length of input array
 */
 
 import java.io.*;
