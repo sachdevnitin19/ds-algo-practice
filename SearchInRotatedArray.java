@@ -1,20 +1,20 @@
 import java.io.*;
 
 class SearchInRotatedArray {
-    static int binarySearch(int arr[],int start, int end, int searchElem){
-        while(start<=end){
-            int key=(end-start)/2+start;
-            if(arr[key]==searchElem){
+    static int binarySearch(int arr[], int start, int end, int searchElem) {
+        while (start <= end) {
+            int key = (end - start) / 2 + start;
+            if (arr[key] == searchElem) {
                 return key;
-            }
-            else if(arr[key]<searchElem){
-                start=key+1;
-            }else {
-                end=key-1;
+            } else if (arr[key] < searchElem) {
+                start = key + 1;
+            } else {
+                end = key - 1;
             }
         }
         return -1;
     }
+
     public static void main(String args[]) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
@@ -27,22 +27,23 @@ class SearchInRotatedArray {
             }
             int elem = Integer.parseInt(br.readLine());
 
-            int pivot=0;
-            
-            while (pivot <n - 1 && arr[pivot] < arr[pivot + 1]) {
-                pivot++;
-            }
-            pivot++;
-            if(elem==arr[0]){
-                System.out.println(0);
-            }else if(elem==arr[n-1]){
-                System.out.println(n-1);
-            }else if(elem>arr[0]){
-                System.out.println(binarySearch(arr, 0, pivot-1, elem));
-            }else if(elem<arr[n-1]){
-                System.out.println(binarySearch(arr, pivot, n-1, elem));
+            int l = 0, r = n - 1;
+            while (l < r) {
+                int mid = l + (r - l) / 2;
+                if (arr[mid] > arr[r]) {
+                    l = mid + 1;
+                } else {
+                    r = mid;
+                }
             }
             
+            if (arr[l] == elem) {
+                System.out.println(l);
+            }
+            l = elem < arr[0] ? l : 0;
+            r = elem > arr[arr.length - 1] ? r - 1 : arr.length - 1;
+            System.out.println(binarySearch(arr, l, r, elem));
+
         }
     }
 }
