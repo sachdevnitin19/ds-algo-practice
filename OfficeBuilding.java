@@ -6,13 +6,15 @@ class OfficeCordinates {
 
 class OfficeBuilding {
 
-    //creates recursion tree for every posiible cell position.
+    //creates recursion tree for every posiible cell position of every office building.
     public static int returnMinDistancePlacement(int h, int w, OfficeCordinates[] OC, int currOCIndex) {
+        //if reached leaf node of our recursion tree i.e all buildings are positioned then 
+        //calculating max distance of nearest office building.
         if (currOCIndex == OC.length) {
             return calcMaxDistance(h, w, OC);
         }
         int minDistancePlacement = Integer.MAX_VALUE, startR = 0, startC = 0;
-
+        //current building position should from previous building position +1
         if (currOCIndex != 0) {
             startR = OC[currOCIndex - 1].row;
             if (OC[currOCIndex - 1].col == w - 1) {
@@ -22,7 +24,7 @@ class OfficeBuilding {
                 startC = OC[currOCIndex - 1].col + 1;
             }
         }
-
+        //placing current build at every possible location & recursively calling for next building
         for (int r = startR; r < h; r++) {
             for (int c = startC; c < w; c++) {
                 OC[currOCIndex].row = r;
