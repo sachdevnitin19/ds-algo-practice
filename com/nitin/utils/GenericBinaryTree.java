@@ -383,8 +383,6 @@ public class GenericBinaryTree<T> {
 
     public void printTopView(){
         System.out.println("#### Top View ####");
-        // TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=new TreeMap<>();
-        // this.mapNodesByHorDist(this.root, horDistMap, 0);
         TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=this.mapNodesByHorDistBFS();
         List<GenericBinaryTreeNode<T>> levelOrderList=new ArrayList<>();
         for(int key:horDistMap.keySet()){
@@ -399,8 +397,6 @@ public class GenericBinaryTree<T> {
 
     public List<GenericBinaryTreeNode<T>> verticalOrderTraversal(){
         System.out.println("#### Vertical Order Traversal ####");
-        // TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=new TreeMap<>();
-        // this.mapNodesByHorDist(this.root, horDistMap, 0);
 
         TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=this.mapNodesByHorDistBFS();
 
@@ -413,21 +409,6 @@ public class GenericBinaryTree<T> {
         }
         System.out.println();
         return levelOrderList;
-    }
-
-    public void mapNodesByHorDist(GenericBinaryTreeNode<T> root, TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap, int currHorDist){
-        if(root==null){
-            return;
-        }
-        List<GenericBinaryTreeNode<T>> currHorDistList=horDistMap.get(currHorDist);
-        if(currHorDistList==null){
-            currHorDistList=new ArrayList<>();
-
-            horDistMap.put(currHorDist,currHorDistList);
-        }
-        currHorDistList.add(root);
-        mapNodesByHorDist(root.left,horDistMap,currHorDist-1);
-        mapNodesByHorDist(root.right,horDistMap,currHorDist+1);
     }
 
     public TreeMap<Integer, List<GenericBinaryTreeNode<T>>> mapNodesByHorDistBFS(){
