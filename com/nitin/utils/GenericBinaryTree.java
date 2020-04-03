@@ -1,5 +1,9 @@
 package com.nitin.utils;
 
+import java.util.TreeMap;
+import java.util.List;
+import java.util.ArrayList;
+
 public class GenericBinaryTree<T> {
     public GenericBinaryTreeNode<T> root;
 
@@ -136,9 +140,9 @@ public class GenericBinaryTree<T> {
     private void postOrderTraversal(GenericBinaryTreeNode<T> root) {
         if (root == null)
             return;
-        System.out.println("Node Data:- " + root.nodeData);
         postOrderTraversal(root.left);
         postOrderTraversal(root.right);
+        System.out.println("Node Data:- " + root.nodeData);
     }
 
     public void levelOrderTraversal() {
@@ -217,7 +221,7 @@ public class GenericBinaryTree<T> {
         return leftSubTreeResult != null ? leftSubTreeResult : rightSubTreeResult;
     }
 
-    //class to maintain state while finding and deleting node recursively.
+    // class to maintain state while finding and deleting node recursively.
     private class nodeMaxLevel {
         int maxLevel;
         GenericBinaryTreeNode<T> deepestNode, deepestNodeParent, nodeToDelete;
@@ -228,8 +232,8 @@ public class GenericBinaryTree<T> {
         }
     }
 
-    //delete node in tree and replace it with rightmost deepest node
-    //so that completeness of binary tree is maintained.
+    // delete node in tree and replace it with rightmost deepest node
+    // so that completeness of binary tree is maintained.
     public boolean deleteNodeRecursively(T deleteNodeData) {
         nodeMaxLevel deepNodeObj = new nodeMaxLevel();
         this.findNodesForDeletion(this.root, null, 1, deepNodeObj, false, deleteNodeData);
@@ -246,7 +250,7 @@ public class GenericBinaryTree<T> {
         return true;
     }
 
-    //finds node which is to be deleted and deepest rightmost node
+    // finds node which is to be deleted and deepest rightmost node
     private void findNodesForDeletion(GenericBinaryTreeNode<T> root, GenericBinaryTreeNode<T> parent, int levelSoFar,
             nodeMaxLevel maxLevelRef, boolean isRightNull, T nodeToFind) {
         if (root == null) {
@@ -296,8 +300,8 @@ public class GenericBinaryTree<T> {
         convertToMirrorRecursively(this.root);
     }
 
-    //recursive implementation of coverting tree to its binary image
-    //doing post order traversal and swapping left and right child
+    // recursive implementation of coverting tree to its binary image
+    // doing post order traversal and swapping left and right child
     private void convertToMirrorRecursively(GenericBinaryTreeNode<T> root) {
         if (root == null) {
             return;
@@ -309,7 +313,7 @@ public class GenericBinaryTree<T> {
         root.right = temp;
     }
 
-    //iterative implementation
+    // iterative implementation
     public void convertToMirrorIteratively() {
         GenericQueue<GenericBinaryTreeNode<T>> levelQueue = new GenericQueue<GenericBinaryTreeNode<T>>();
         levelQueue.enqueue(this.root);
@@ -317,56 +321,151 @@ public class GenericBinaryTree<T> {
             int currLevel = levelQueue.length();
             while (currLevel-- > 0) {
                 GenericBinaryTreeNode<T> currNode = levelQueue.dequeue();
-                if (currNode != null) {
+                if (currNode.left != null)
                     levelQueue.enqueue(currNode.left);
+
+                if (currNode.right != null)
                     levelQueue.enqueue(currNode.right);
-                    GenericBinaryTreeNode<T> temp = currNode.left;
-                    currNode.left = currNode.right;
-                    currNode.right = temp;
-                }
+
+                GenericBinaryTreeNode<T> temp = currNode.left;
+                currNode.left = currNode.right;
+                currNode.right = temp;
+
             }
         }
     }
-    
-    //Check whether a binary tree is height balanced or not.
-    //Height-balanced binary tree : is defined as a binary tree in which the depth of the two subtrees of every node 
-    //never differ by more than one.
 
-    class HeightState{
+    // Check whether a binary tree is height balanced or not.
+    // Height-balanced binary tree : is defined as a binary tree in which the depth
+    // of the two subtrees of every node
+    // never differ by more than one.
+
+    class HeightState {
         int maxHeight;
         boolean isSubTreeBalanced;
-        HeightState(){
-            this.maxHeight=0;
-            this.isSubTreeBalanced=false;
+
+        HeightState() {
+            this.maxHeight = 0;
+            this.isSubTreeBalanced = false;
         }
     }
+
     public boolean isTreeBalanced() {
         HeightState treeHS = isSubTreeBalanced(root);
         return treeHS.isSubTreeBalanced;
     }
 
     public HeightState isSubTreeBalanced(GenericBinaryTreeNode<T> root) {
-        HeightState HS=new HeightState();
+        HeightState HS = new HeightState();
         if (root == null) {
-            HS.isSubTreeBalanced=true;
+            HS.isSubTreeBalanced = true;
             return HS;
         }
-        
+
         HeightState leftSubTreeHS = isSubTreeBalanced(root.left);
-        if(!leftSubTreeHS.isSubTreeBalanced){
+        if (!leftSubTreeHS.isSubTreeBalanced) {
             return HS;
         }
 
         HeightState rightSubTreeHS = isSubTreeBalanced(root.right);
-        if(!rightSubTreeHS.isSubTreeBalanced){
+        if (!rightSubTreeHS.isSubTreeBalanced) {
             return HS;
         }
 
-        if(Math.abs(leftSubTreeHS.maxHeight-rightSubTreeHS.maxHeight)>1){
+        if (Math.abs(leftSubTreeHS.maxHeight - rightSubTreeHS.maxHeight) > 1) {
             return HS;
         }
-        HS.maxHeight=(leftSubTreeHS.maxHeight>rightSubTreeHS.maxHeight?leftSubTreeHS.maxHeight:rightSubTreeHS.maxHeight)+1;
-        HS.isSubTreeBalanced=true;
+        HS.maxHeight = (leftSubTreeHS.maxHeight > rightSubTreeHS.maxHeight ? leftSubTreeHS.maxHeight
+                : rightSubTreeHS.maxHeight) + 1;
+        HS.isSubTreeBalanced = true;
         return HS;
     }
+
+    public void printTopView(){
+        System.out.println("#### Top View ####");
+        // TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=new TreeMap<>();
+        // this.mapNodesByHorDist(this.root, horDistMap, 0);
+        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=this.mapNodesByHorDistBFS();
+        List<GenericBinaryTreeNode<T>> levelOrderList=new ArrayList<>();
+        for(int key:horDistMap.keySet()){
+            levelOrderList.add(horDistMap.get(key).get(0));
+        }
+        for(GenericBinaryTreeNode<T> node:levelOrderList){
+            System.out.print(node.nodeData+" ");
+        }
+        System.out.println();
+    }
+
+
+    public List<GenericBinaryTreeNode<T>> verticalOrderTraversal(){
+        System.out.println("#### Vertical Order Traversal ####");
+        // TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=new TreeMap<>();
+        // this.mapNodesByHorDist(this.root, horDistMap, 0);
+
+        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=this.mapNodesByHorDistBFS();
+
+        List<GenericBinaryTreeNode<T>> levelOrderList=new ArrayList<>();
+        for(int key:horDistMap.keySet()){
+            levelOrderList.addAll(horDistMap.get(key));
+        }
+        for(GenericBinaryTreeNode<T> node:levelOrderList){
+            System.out.print(node.nodeData+" ");
+        }
+        System.out.println();
+        return levelOrderList;
+    }
+
+    public void mapNodesByHorDist(GenericBinaryTreeNode<T> root, TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap, int currHorDist){
+        if(root==null){
+            return;
+        }
+        List<GenericBinaryTreeNode<T>> currHorDistList=horDistMap.get(currHorDist);
+        if(currHorDistList==null){
+            currHorDistList=new ArrayList<>();
+
+            horDistMap.put(currHorDist,currHorDistList);
+        }
+        currHorDistList.add(root);
+        mapNodesByHorDist(root.left,horDistMap,currHorDist-1);
+        mapNodesByHorDist(root.right,horDistMap,currHorDist+1);
+    }
+
+    public TreeMap<Integer, List<GenericBinaryTreeNode<T>>> mapNodesByHorDistBFS(){
+        class NodeWithHorDist{
+            int horDist;
+            GenericBinaryTreeNode<T> treeNode;
+            NodeWithHorDist(int currHorDist, GenericBinaryTreeNode<T> currTreeNode){
+                this.horDist=currHorDist;
+                this.treeNode=currTreeNode;
+            }
+        }
+
+        GenericQueue<NodeWithHorDist> bfsQueue=new GenericQueue<>();
+        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=new TreeMap<>();
+
+        bfsQueue.enqueue(new NodeWithHorDist(0, this.root));
+
+        while(!bfsQueue.isEmpty()){
+            NodeWithHorDist currNodeWithHorDist=bfsQueue.dequeue();
+            List<GenericBinaryTreeNode<T>> listWithCurrHorDist=horDistMap.get(currNodeWithHorDist.horDist);
+            if(listWithCurrHorDist==null){
+                listWithCurrHorDist=new ArrayList<>();
+                horDistMap.put(currNodeWithHorDist.horDist,listWithCurrHorDist);
+            }
+            listWithCurrHorDist.add(currNodeWithHorDist.treeNode);
+            
+            
+            if(currNodeWithHorDist.treeNode.left!=null){
+                bfsQueue.enqueue(new NodeWithHorDist(currNodeWithHorDist.horDist-1, currNodeWithHorDist.treeNode.left));
+            }
+
+            if(currNodeWithHorDist.treeNode.right!=null){
+                bfsQueue.enqueue(new NodeWithHorDist(currNodeWithHorDist.horDist+1, currNodeWithHorDist.treeNode.right));
+            }
+        }
+        return horDistMap;
+    }
+
+
+
 }

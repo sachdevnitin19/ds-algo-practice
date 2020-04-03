@@ -8,8 +8,6 @@ public class GenericLinkedList<T> {
         GenericNode<T> newNode = new GenericNode<T>(nodeData);
         if (this.length == 0) {
             this.head = newNode;
-        } else if (this.length == 1) {
-            this.head.next = newNode;
         } else {
             GenericNode<T> tempNode = this.head;
             while (tempNode.next != null) {
@@ -22,18 +20,12 @@ public class GenericLinkedList<T> {
     }
 
     public void print() {
-        if (this.head == null) {
-            return;
-        } else if (this.head.next == null) {
-            System.out.println(this.head.data);
-        } else {
-            GenericNode<T> tempNode = this.head;
-            while (tempNode != null) {
-                System.out.print(tempNode.data + " ");
-                tempNode = tempNode.next;
-            }
-            System.out.println();
+        GenericNode<T> tempNode = this.head;
+        while (tempNode != null) {
+            System.out.print(tempNode.data + " ");
+            tempNode = tempNode.next;
         }
+        System.out.println();
     }
 
     public boolean deleteNodeByPos(int pos) {
@@ -85,7 +77,7 @@ public class GenericLinkedList<T> {
             return;
         GenericNode<T> slow = null, curr = this.head, fast = null;
         while (curr != null) {
-            fast=curr.next;
+            fast = curr.next;
             curr.next = slow;
             slow = curr;
             curr = fast;

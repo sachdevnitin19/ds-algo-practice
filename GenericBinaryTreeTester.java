@@ -23,12 +23,14 @@ class GenericBinaryTreeTester {
         BT1.insert(7);
         BT1.insert(8);
         BT1.insert(9);
-        BT1.insert(10);
+        // BT1.insert(10);
 
-        // BT1.levelOrderTraversal();
+        BT1.levelOrderTraversal();
+        BT1.verticalOrderTraversal();
         // BT1.convertToMirror();
         // BT1.convertToMirrorIteratively();
         // BT1.levelOrderTraversal();
+        BT1.printTopView();
         // System.out
         //         .println(BT1.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         // System.out.println(BT1.deleteNodeRecursively(4) ? "Node Deleted" : "Node not found");
@@ -36,7 +38,7 @@ class GenericBinaryTreeTester {
         //         .println(BT1.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         // BT1.levelOrderTraversal();
         // System.out.println(BT1.isTreeSymmetric()?"Tree is Symmetric":"Tree is not Symmetric");
-        System.out.println(BT1.isTreeBalanced()?"BT1 Tree is Balanced":"BT1 Tree is not Balanced");
+        // System.out.println(BT1.isTreeBalanced()?"BT1 Tree is Balanced":"BT1 Tree is not Balanced");
 
         //example tree 2
         //      1
@@ -55,8 +57,12 @@ class GenericBinaryTreeTester {
         BT2.root.left.left = new GenericBinaryTreeNode<Integer>(4);
         BT2.root.left.left.left = new GenericBinaryTreeNode<Integer>(5);
         BT2.root.left.left.left.right = new GenericBinaryTreeNode<Integer>(6);
+        
+        BT2.levelOrderTraversal();
 
-        // BT2.levelOrderTraversal();
+        BT2.convertToMirrorIteratively();
+
+        BT2.levelOrderTraversal();
         // System.out
         //         .println(BT2.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         // System.out.println(BT2.deleteNodeRecursively(4) ? "Node Deleted" : "Node not found");
@@ -77,5 +83,27 @@ class GenericBinaryTreeTester {
 
         // System.out.println(BT3.isTreeSymmetric()?"Tree is Symmetric":"Tree is not Symmetric");
         System.out.println(BT3.isTreeBalanced()?"BT3 Tree is Balanced":"BT3 Tree is not Balanced");
+
+
+        /*
+              1
+            /   \
+            2       3
+            \   
+                4  
+                \
+                    5
+                    \
+                    6
+        */
+
+        GenericBinaryTree<Integer> BT4 = new GenericBinaryTree<Integer>();
+        BT4.root = new GenericBinaryTreeNode<Integer>(1);
+        BT4.root.left = new GenericBinaryTreeNode<Integer>(2);
+        BT4.root.right = new GenericBinaryTreeNode<Integer>(3);
+        BT4.root.left.right = new GenericBinaryTreeNode<Integer>(4);
+        BT4.root.left.right.right = new GenericBinaryTreeNode<Integer>(5);
+        BT4.root.left.right.right.right = new GenericBinaryTreeNode<Integer>(6);
+        BT4.printTopView();
     }
 }
