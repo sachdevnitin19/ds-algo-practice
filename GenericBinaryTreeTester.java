@@ -30,7 +30,8 @@ class GenericBinaryTreeTester {
         // BT1.convertToMirror();
         // BT1.convertToMirrorIteratively();
         // BT1.levelOrderTraversal();
-        BT1.printTopView();
+        // BT1.printTopView();
+        System.out.println(BT1.serializeTree());
         // System.out
         //         .println(BT1.doesNodeExists(4) ? "Node exists in Binary Tree" : "Node does not exists in Binary Tree");
         // System.out.println(BT1.deleteNodeRecursively(4) ? "Node Deleted" : "Node not found");
@@ -105,5 +106,28 @@ class GenericBinaryTreeTester {
         BT4.root.left.right.right = new GenericBinaryTreeNode<Integer>(5);
         BT4.root.left.right.right.right = new GenericBinaryTreeNode<Integer>(6);
         BT4.printTopView();
+
+
+        /*
+              1
+            /   \
+            2    3
+                / \
+               4   5
+        */
+
+        GenericBinaryTree<Integer> BT5 = new GenericBinaryTree<Integer>();
+        BT5.root = new GenericBinaryTreeNode<Integer>(1);
+        BT5.root.left = new GenericBinaryTreeNode<Integer>(2);
+        BT5.root.right = new GenericBinaryTreeNode<Integer>(3);
+        BT5.root.right.left = new GenericBinaryTreeNode<Integer>(4);
+        BT5.root.right.right = new GenericBinaryTreeNode<Integer>(5);
+        String serializedStr=BT5.serializeTree();
+        System.out.println(serializedStr);
+
+
+        GenericBinaryTree<Integer> BT5Copy = new GenericBinaryTree<Integer>();
+        BT5Copy.root=BT5Copy.deserializeTree(serializedStr);
+        BT5Copy.levelOrderTraversal();
     }
 }

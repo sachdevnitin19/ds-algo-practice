@@ -1,8 +1,6 @@
 package com.nitin.utils;
 
-import java.util.TreeMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GenericBinaryTree<T> {
     public GenericBinaryTreeNode<T> root;
@@ -381,72 +379,149 @@ public class GenericBinaryTree<T> {
         return HS;
     }
 
-    public void printTopView(){
+    public void printTopView() {
         System.out.println("#### Top View ####");
-        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=this.mapNodesByHorDistBFS();
-        List<GenericBinaryTreeNode<T>> levelOrderList=new ArrayList<>();
-        for(int key:horDistMap.keySet()){
+        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap = this.mapNodesByHorDistBFS();
+        List<GenericBinaryTreeNode<T>> levelOrderList = new ArrayList<>();
+        for (int key : horDistMap.keySet()) {
             levelOrderList.add(horDistMap.get(key).get(0));
         }
-        for(GenericBinaryTreeNode<T> node:levelOrderList){
-            System.out.print(node.nodeData+" ");
+        for (GenericBinaryTreeNode<T> node : levelOrderList) {
+            System.out.print(node.nodeData + " ");
         }
         System.out.println();
     }
 
-
-    public List<GenericBinaryTreeNode<T>> verticalOrderTraversal(){
+    public List<GenericBinaryTreeNode<T>> verticalOrderTraversal() {
         System.out.println("#### Vertical Order Traversal ####");
 
-        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=this.mapNodesByHorDistBFS();
+        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap = this.mapNodesByHorDistBFS();
 
-        List<GenericBinaryTreeNode<T>> levelOrderList=new ArrayList<>();
-        for(int key:horDistMap.keySet()){
+        List<GenericBinaryTreeNode<T>> levelOrderList = new ArrayList<>();
+        for (int key : horDistMap.keySet()) {
             levelOrderList.addAll(horDistMap.get(key));
         }
-        for(GenericBinaryTreeNode<T> node:levelOrderList){
-            System.out.print(node.nodeData+" ");
+        for (GenericBinaryTreeNode<T> node : levelOrderList) {
+            System.out.print(node.nodeData + " ");
         }
         System.out.println();
         return levelOrderList;
     }
 
-    public TreeMap<Integer, List<GenericBinaryTreeNode<T>>> mapNodesByHorDistBFS(){
-        class NodeWithHorDist{
+    public TreeMap<Integer, List<GenericBinaryTreeNode<T>>> mapNodesByHorDistBFS() {
+        class NodeWithHorDist {
             int horDist;
             GenericBinaryTreeNode<T> treeNode;
-            NodeWithHorDist(int currHorDist, GenericBinaryTreeNode<T> currTreeNode){
-                this.horDist=currHorDist;
-                this.treeNode=currTreeNode;
+
+            NodeWithHorDist(int currHorDist, GenericBinaryTreeNode<T> currTreeNode) {
+                this.horDist = currHorDist;
+                this.treeNode = currTreeNode;
             }
         }
 
-        GenericQueue<NodeWithHorDist> bfsQueue=new GenericQueue<>();
-        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap=new TreeMap<>();
+        GenericQueue<NodeWithHorDist> bfsQueue = new GenericQueue<>();
+        TreeMap<Integer, List<GenericBinaryTreeNode<T>>> horDistMap = new TreeMap<>();
 
         bfsQueue.enqueue(new NodeWithHorDist(0, this.root));
 
-        while(!bfsQueue.isEmpty()){
-            NodeWithHorDist currNodeWithHorDist=bfsQueue.dequeue();
-            List<GenericBinaryTreeNode<T>> listWithCurrHorDist=horDistMap.get(currNodeWithHorDist.horDist);
-            if(listWithCurrHorDist==null){
-                listWithCurrHorDist=new ArrayList<>();
-                horDistMap.put(currNodeWithHorDist.horDist,listWithCurrHorDist);
+        while (!bfsQueue.isEmpty()) {
+            NodeWithHorDist currNodeWithHorDist = bfsQueue.dequeue();
+            List<GenericBinaryTreeNode<T>> listWithCurrHorDist = horDistMap.get(currNodeWithHorDist.horDist);
+            if (listWithCurrHorDist == null) {
+                listWithCurrHorDist = new ArrayList<>();
+                horDistMap.put(currNodeWithHorDist.horDist, listWithCurrHorDist);
             }
             listWithCurrHorDist.add(currNodeWithHorDist.treeNode);
-            
-            
-            if(currNodeWithHorDist.treeNode.left!=null){
-                bfsQueue.enqueue(new NodeWithHorDist(currNodeWithHorDist.horDist-1, currNodeWithHorDist.treeNode.left));
+
+            if (currNodeWithHorDist.treeNode.left != null) {
+                bfsQueue.enqueue(
+                        new NodeWithHorDist(currNodeWithHorDist.horDist - 1, currNodeWithHorDist.treeNode.left));
             }
 
-            if(currNodeWithHorDist.treeNode.right!=null){
-                bfsQueue.enqueue(new NodeWithHorDist(currNodeWithHorDist.horDist+1, currNodeWithHorDist.treeNode.right));
+            if (currNodeWithHorDist.treeNode.right != null) {
+                bfsQueue.enqueue(
+                        new NodeWithHorDist(currNodeWithHorDist.horDist + 1, currNodeWithHorDist.treeNode.right));
             }
         }
         return horDistMap;
     }
 
+    public String serializeTree() {
+        if (root == null) {
+            return "[]";
+        }
+        String serializedStr = "[",tempStr="";
+        boolean nodeExistsInCurrLevel=false;
+        Queue<GenericBinaryTreeNode<T>> bfsQ = new LinkedList<>();
+        int treeLevel = 0, nodesInCurrLevel = 0;
+        bfsQ.add(this.root);
+        while (!bfsQ.isEmpty()) {
+            nodesInCurrLevel =(int)Math.pow(2, treeLevel);
+            System.out.println(nodesInCurrLevel);
+            tempStr="";
+            nodeExistsInCurrLevel=false;
+            while (nodesInCurrLevel > 0) {
+                GenericBinaryTreeNode<T> currNode = bfsQ.poll();
+                if (currNode != null) {
+                    tempStr += (currNode.nodeData + ",");
+                    nodeExistsInCurrLevel=true;
+                } else {
+                    tempStr += "null,";
+                }
+                if (currNode != null) {
+                    bfsQ.add(currNode.left);
+                    bfsQ.add(currNode.right);
+                }
+                nodesInCurrLevel--;
+            }
+            if(nodeExistsInCurrLevel){
+                serializedStr+=tempStr;
+            }else{
+                break;
+            }
+            treeLevel++;
+        }
+        serializedStr = serializedStr.substring(0, serializedStr.length() - 1);
+        serializedStr += "]";
+        return serializedStr;
+    }
 
+    public GenericBinaryTreeNode<Integer> deserializeTree(String serializedTree){
+        if(serializedTree.equals("[]")){
+            return null;
+        }
+        serializedTree=serializedTree.substring(1,serializedTree.length()-1);
+        System.out.println(serializedTree);
+        String[] nodesToCreate=serializedTree.split(",");
+        
+        Queue<GenericBinaryTreeNode<Integer>> bfsQ=new LinkedList<>();
+        int currParentNodeCtr=0;
+        GenericBinaryTreeNode<Integer> newNode,currNode,head;
+        
+        head=currNode=new GenericBinaryTreeNode<Integer>(Integer.parseInt(nodesToCreate[0]));
+        // bfsQ.add(currNode);
+        for(int i=1;i<nodesToCreate.length;i++){
+            System.out.println(nodesToCreate[i]);
+            if(currParentNodeCtr==2){
+                currNode=bfsQ.remove();
+                currParentNodeCtr=0;
+                System.out.println("new node- "+currNode.nodeData);
+            }
+            if(nodesToCreate[i].equals("null")){
+                System.out.println("skipping null values");
+                currParentNodeCtr++;
+                continue;
+            }
+            newNode=new GenericBinaryTreeNode<Integer>(Integer.parseInt(nodesToCreate[i]));
+            bfsQ.add(newNode);
+            if(currParentNodeCtr==0){
+                currNode.left=newNode;
+            }else{
+                currNode.right=newNode;
+            }
+            currParentNodeCtr++;
+        }
+        return head;
+    } 
 
 }
