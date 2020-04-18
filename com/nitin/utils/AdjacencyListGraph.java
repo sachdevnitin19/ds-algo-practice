@@ -50,27 +50,29 @@ public class AdjacencyListGraph {
         }
         System.out.println();
     }
-    public boolean doesPathExists(int src, int dest){
-        HashSet<Integer> visitedNode=new HashSet<Integer>();
-        Queue<Integer> nodeToVisit=new LinkedList<Integer>();
+
+    public boolean doesPathExists(int src, int dest) {
+        HashSet<Integer> visitedNode = new HashSet<Integer>();
+        Queue<Integer> nodeToVisit = new LinkedList<Integer>();
         nodeToVisit.add(src);
-        while(!nodeToVisit.isEmpty()){
-            int currNode=nodeToVisit.remove();
-            Node ptr=this.adjList[currNode].head;
+        while (!nodeToVisit.isEmpty()) {
+            int currNode = nodeToVisit.remove();
+            Node ptr = this.adjList[currNode].head;
             visitedNode.add(currNode);
-            while(ptr!=null){
-                if(ptr.data==dest){
+            while (ptr != null) {
+                if (ptr.data == dest) {
                     return true;
                 }
-                if(!visitedNode.contains(ptr.data)){
-                    nodeToVisit.add(ptr.data);    
+                if (!visitedNode.contains(ptr.data)) {
+                    nodeToVisit.add(ptr.data);
                 }
-                ptr=ptr.next;
+                ptr = ptr.next;
             }
         }
-        
+
         return false;
     }
+
     public void printDFS() {
         HashSet<Integer> nodesVisited = new HashSet<Integer>();
         Stack<Integer> nodesStack = new Stack<Integer>();
@@ -98,28 +100,32 @@ public class AdjacencyListGraph {
     public void printDFSRecursively() {
         HashSet<Integer> nodesVisited = new HashSet<Integer>();
         for (int i = 0; i < noOfVertices; i++) {
-            dfsTraverse(i, nodesVisited);
+            if (!nodesVisited.contains(i)) {
+                dfsTraverse(i, nodesVisited);
+            }
         }
         System.out.println();
     }
 
     public void dfsTraverse(int vertice, HashSet<Integer> nodesVisited) {
-        if (!nodesVisited.contains(vertice)) {
-            System.out.print(vertice + " ");
-            nodesVisited.add(vertice);
-            Node ptr = this.adjList[vertice].head;
-            while (ptr != null) {
-                dfsTraverse(ptr.data, nodesVisited);
-                ptr = ptr.next;
-            }
 
+        System.out.print(vertice + " ");
+        nodesVisited.add(vertice);
+        Node ptr = this.adjList[vertice].head;
+        while (ptr != null) {
+            dfsTraverse(ptr.data, nodesVisited);
+            ptr = ptr.next;
         }
+
     }
 
     public boolean isGraphCyclic() {
         HashSet<Integer> nodesVisited = new HashSet<Integer>();
         HashSet<Integer> recursionSet = new HashSet<Integer>();
         for (int i = 0; i < noOfVertices; i++) {
+            if (nodesVisited.contains(i)) {
+                continue;
+            }
             if (isGraphCyclicUtil(i, nodesVisited, recursionSet)) {
                 return true;
             }
@@ -131,7 +137,7 @@ public class AdjacencyListGraph {
         if (recursionSet.contains(vertice)) {
             return true;
         }
-        
+
         recursionSet.add(vertice);
         Node ptr = this.adjList[vertice].head;
         while (ptr != null) {
@@ -154,11 +160,14 @@ public class AdjacencyListGraph {
             return "";
         }
         HashSet<Integer> nodesVisited = new HashSet<Integer>();
+        HashSet<Integer> recurSet = new HashSet<>();
+
         Stack<Integer> topologicalOrderStack = new Stack<Integer>();
         try {
             for (int i = 0; i < noOfVertices; i++) {
                 if (!nodesVisited.contains(i)) {
-                    findTopologicalOrder(i, nodesVisited, topologicalOrderStack);
+                    System.out.println("starting from " + i);
+                    findTopologicalOrder(i, recurSet, nodesVisited, topologicalOrderStack);
                 }
             }
         } catch (CyclicGraphException e) {
@@ -173,24 +182,27 @@ public class AdjacencyListGraph {
         return order.toString().trim();
     }
 
-    public void findTopologicalOrder(int vertice, HashSet<Integer> nodesVisited, Stack<Integer> topologicalOrderStack)
-            throws CyclicGraphException {
-        if (nodesVisited.contains(vertice)) {
+    public void findTopologicalOrder(int vertice, HashSet<Integer> recurSet, HashSet<Integer> nodesVisited,
+            Stack<Integer> topologicalOrderStack) throws CyclicGraphException {
+
+        if (recurSet.contains(vertice)) {
             throw new CyclicGraphException("Graph contains cycle");
         }
-        nodesVisited.add(vertice);
+
+        recurSet.add(vertice);
         Node ptr = this.adjList[vertice].head;
         while (ptr != null) {
             if (!nodesVisited.contains(ptr.data)) {
-                findTopologicalOrder(ptr.data, nodesVisited, topologicalOrderStack);
+                findTopologicalOrder(ptr.data, recurSet, nodesVisited, topologicalOrderStack);
             }
             ptr = ptr.next;
         }
+        recurSet.remove(vertice);
+        nodesVisited.add(vertice);
         topologicalOrderStack.push(vertice);
     }
 
     class CyclicGraphException extends Exception {
-        private static final long serialVersionUID = 7718828512143293558L;
         public String message;
 
         CyclicGraphException(String message) {
