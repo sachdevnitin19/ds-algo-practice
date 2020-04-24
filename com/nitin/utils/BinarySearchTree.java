@@ -95,6 +95,7 @@ public class BinarySearchTree {
                 parentPtr.right = null;
             }
         } else if (nodeToDelete.left == null || nodeToDelete.right == null) {
+            //if node to delete has one child then replace the node with its child
             BinaryTreeNode deleteNodeChild = nodeToDelete.left != null ? nodeToDelete.left : nodeToDelete.right;
             if (parentPtr == null) {
                 this.root = deleteNodeChild;
@@ -105,6 +106,7 @@ public class BinarySearchTree {
                 parentPtr.right = deleteNodeChild;
             }
         } else {
+            //if node to delete has both children then find its inorder successor and replace with it.
             System.out.println("Finding successor");
             BinaryTreeNode inOrderSuccessor = nodeToDelete.right;
             while (inOrderSuccessor.left != null) {
@@ -164,9 +166,12 @@ public class BinarySearchTree {
             succ=succ.left;
         }
         root.nodeData=succ.nodeData;
+        
         if(succParent!=null){
+            //succ might have right child hence setting as succParent's left child
             succParent.left=succ.right;
         }else{
+            //if node to delete has no left child
             root.right=succ.right;
         }
         return root;
