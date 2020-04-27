@@ -1,9 +1,12 @@
 package com.nitin.utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 //undirected unweighted graph.
 public class AdjacencyListGraph {
@@ -210,4 +213,46 @@ public class AdjacencyListGraph {
             this.message = message;
         }
     }
+    //Brute force algorithm to find articulate points
+    public List<Integer> findArticulationPoints() {
+        List<Integer> articulationPoints = new ArrayList<>();
+        for (int itr = 0; itr < noOfVertices; itr++) {
+            
+            if(isArticulatePoint(itr)){
+                articulationPoints.add(itr);
+            }
+        }
+        return articulationPoints;
+    }
+
+    public boolean isArticulatePoint(int nodeToCheck) {
+        Stack<Integer> dfsStack = new Stack<>();
+
+        for (int nodeIndex = 0; nodeIndex < this.noOfVertices; nodeIndex++) {
+            if (nodeIndex == nodeToCheck) {
+                continue;
+            }
+            HashSet<Integer> recurSet = new HashSet<>();
+            dfsStack.push(nodeIndex);
+
+            while (!dfsStack.isEmpty()) {
+                int currNode = dfsStack.pop();
+                if (currNode == nodeToCheck || recurSet.contains(currNode)) {
+                    continue;
+                }
+                recurSet.add(currNode);
+                if (recurSet.size() == this.noOfVertices - 1) {
+                    return false;
+                }
+
+                Node ptr = this.adjList[currNode].head;
+                while (ptr != null) {
+                    dfsStack.push(ptr.data);
+                    ptr = ptr.next;
+                }
+            }
+        }
+        return true;
+    }
+
 }
