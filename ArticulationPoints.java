@@ -1,6 +1,4 @@
 import com.nitin.utils.AdjacencyListGraph;
-import java.util.List;
-import java.util.ArrayList;
 
 public class ArticulationPoints {
     public static void main(String[] args) {
@@ -18,8 +16,7 @@ public class ArticulationPoints {
 
         myGraph.addEdge(5, 6);
 
-        System.out.println("Articulation points in graph are "+myGraph.findArticulationPoints());
+        System.out.println("Articulation points in graph are " + myGraph.findArticulationPoints());
     }
 
-    
 }
