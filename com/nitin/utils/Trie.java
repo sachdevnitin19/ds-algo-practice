@@ -25,18 +25,12 @@ public class Trie {
             ch = word.charAt(i);
             TrieNode ptrChild = ptr.child[ch - 97];
             if (ptrChild == null) {
-                break;
+                ptrChild = ptr.child[ch - 97] = new TrieNode();
             }
             ptr = ptrChild;
             i++;
         }
 
-        while (i < wordLen) {
-            ch = word.charAt(i);
-            ptr.child[ch - 97] = new TrieNode();
-            ptr = ptr.child[ch - 97];
-            i++;
-        }
         ptr.isWord = true;
     }
 
@@ -61,7 +55,9 @@ public class Trie {
         return true;
     }
 
-    /** Returns if there is any word in the trie that starts with the given prefix. */
+    /**
+     * Returns if there is any word in the trie that starts with the given prefix.
+     */
     public boolean startsWith(String prefix) {
         TrieNode ptr = this.root;
         int prefixLen = prefix.length(), i = 0;
