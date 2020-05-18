@@ -10,10 +10,6 @@ public class WordLadder {
 
     public static void main(String[] args) {
         String beginWord = "log", endWord = "cog";
-
-        // String[] wordList = new String[] { "hot", "dot", "dog", "lot", "log", "cog"
-        // };
-
         List<String> wordList = new ArrayList<>();
         wordList.addAll(Arrays.asList("hot", "dot", "dog", "lot", "log", "cog"));
 
@@ -26,20 +22,20 @@ public class WordLadder {
         WordGraph wg = new WordGraph(wordList.size());
 
         for (int itr = 0; itr < wordList.size(); itr++) {
-            if (beginWord.equals(wordList.get(itr))) {
+            if (beginWordIndex == -1 && beginWord.equals(wordList.get(itr))) {
                 beginWordIndex = itr;
             }
-            if (endWord.equals(wordList.get(itr))) {
+            if (endWordIndex == -1 && endWord.equals(wordList.get(itr))) {
                 endWordIndex = itr;
             }
             for (int innerItr = itr + 1; innerItr < wordList.size(); innerItr++) {
                 if (isOneDiffAway(wordList.get(itr), wordList.get(innerItr))) {
-                    System.out.println("Adding edge for "+wordList.get(itr)+" -> "+wordList.get(innerItr));
+                    System.out.println("Adding edge for " + wordList.get(itr) + " -> " + wordList.get(innerItr));
                     wg.addEdge(itr, innerItr);
                 }
             }
         }
-        for(int itr=0;itr<wordList.size();itr++){
+        for (int itr = 0; itr < wordList.size(); itr++) {
             System.out.println(wg.adjList.get(itr));
         }
         System.out.println("min distance= " + wg.findMinDistance(beginWordIndex, endWordIndex));
@@ -79,23 +75,18 @@ public class WordLadder {
             Queue<Integer> bfsQ = new LinkedList<>();
             HashSet<Integer> visitedNodes = new HashSet<>();
             int minDist = 1;
-            // boolean isEndWordFound=false;
             bfsQ.add(src);
             while (!bfsQ.isEmpty()) {
                 int totalNodesInQ = bfsQ.size();
                 while (totalNodesInQ > 0) {
                     int currNode = bfsQ.remove();
                     if (currNode == des) {
-                        // isEndWordFound=true;
-                        // break;
                         return minDist;
                     }
-                    
-
                     visitedNodes.add(currNode);
                     Iterator<Integer> llItr = this.adjList.get(currNode).iterator();
                     while (llItr.hasNext()) {
-                        int adjNode=llItr.next();
+                        int adjNode = llItr.next();
                         if (!visitedNodes.contains(adjNode)) {
                             bfsQ.add(adjNode);
                         }
@@ -103,9 +94,6 @@ public class WordLadder {
                     totalNodesInQ--;
                 }
                 minDist++;
-                // if(isEndWordFound){
-                //     return minDist;
-                // }
             }
             return 0;
         }
